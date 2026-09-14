@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>I9Scan</title>
+<meta name="description" content="Find the Form I-9 errors ICE now fines on sight, before an inspection notice arrives.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Caveat:wght@600&family=Courier+Prime:wght@400;700&family=Libre+Franklin:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+  :root {
+    --paper: #F4F5F1;
+    --sheet: #FFFFFF;
+    --field: #E6EBEF;
+    --ink: #1B2027;
+    --muted: #59616B;
+    --rule: #CDD3D8;
+    --rule-strong: #9EA7B0;
+    --pen: #C4302B;
+    --pen-soft: #F9E3E1;
+    --amber: #9A6208;
+    --amber-soft: #F6ECD9;
+    --ok: #2B7A4B;
+    --btn: #1B2027;
+    --btn-ink: #FFFFFF;
+    --shadow: 0 1px 0 rgba(27, 32, 39, .05), 0 18px 40px -20px rgba(27, 32, 39, .28);
+
+    --f-display: "Archivo", "Arial Narrow", Arial, sans-serif;
+    --f-body: "Libre Franklin", "Franklin Gothic Book", "Segoe UI", system-ui, sans-serif;
+    --f-type: "Courier Prime", "Courier New", ui-monospace, monospace;
+    --f-hand: "Caveat", "Segoe Print", "Comic Sans MS", cursive;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #111412;
+      --sheet: #191D1B;
+      --field: #232A2F;
+      --ink: #E7E9E3;
+      --muted: #9AA39C;
+      --rule: #2A312D;
+      --rule-strong: #46504A;
+      --pen: #FF6D60;
+      --pen-soft: #3A1D1A;
+      --amber: #E0A948;
+      --amber-soft: #2F2513;
+      --ok: #5CC489;
+      --btn: #E7E9E3;
+      --btn-ink: #111412;
+      --shadow: 0 1px 0 rgba(0, 0, 0, .35), 0 18px 40px -20px rgba(0, 0, 0, .8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #111412;
+    --sheet: #191D1B;
+    --field: #232A2F;
+    --ink: #E7E9E3;
+    --muted: #9AA39C;
+    --rule: #2A312D;
+    --rule-strong: #46504A;
+    --pen: #FF6D60;
+    --pen-soft: #3A1D1A;
+    --amber: #E0A948;
+    --amber-soft: #2F2513;
+    --ok: #5CC489;
+    --btn: #E7E9E3;
+    --btn-ink: #111412;
+    --shadow: 0 1px 0 rgba(0, 0, 0, .35), 0 18px 40px -20px rgba(0, 0, 0, .8);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 1rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1140px; margin-inline: auto; padding-inline: 24px; }
+  @media (max-width: 480px) { .wrap { padding-inline: 16px; } }
+  h1, h2, h3 { font-family: var(--f-display); margin: 0; line-height: 1.06; text-wrap: balance; letter-spacing: -.02em; }
+  h2 { font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem); font-weight: 800; }
+  h3 { font-size: 1.125rem; font-weight: 700; letter-spacing: -.01em; }
+  p { margin: 0; }
+  a { color: inherit; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--pen); outline-offset: 3px; }
+  .eyebrow { font-family: var(--f-display); font-weight: 700; font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .type { font-family: var(--f-type); }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font: 600 .9375rem/1 var(--f-body); padding: 13px 20px; border-radius: 4px; border: 1.5px solid transparent; text-decoration: none; cursor: pointer; }
+  .btn-solid { background: var(--btn); color: var(--btn-ink); }
+  .btn-solid:hover { filter: brightness(1.15); }
+  .btn-line { background: transparent; color: var(--ink); border-color: var(--ink); }
+  .btn-line:hover { background: var(--field); }
+
+  /* header */
+  .top { border-bottom: 1px solid var(--rule); }
+  .top .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 14px; }
+  .logo { font-family: var(--f-display); font-weight: 800; font-size: 1.25rem; text-decoration: none; letter-spacing: -.02em; display: flex; align-items: baseline; }
+  .logo b { font-family: var(--f-type); font-weight: 700; font-size: .95em; border: 1.5px solid var(--ink); padding: 0 4px; margin-right: 2px; border-radius: 2px; letter-spacing: 0; }
+  .nav { display: flex; align-items: center; gap: 22px; }
+  .nav a:not(.btn) { color: var(--muted); text-decoration: none; font-size: .9375rem; }
+  .nav a:not(.btn):hover { color: var(--ink); }
+  @media (max-width: 760px) { .nav a:not(.btn) { display: none; } }
+
+  /* hero */
+  .hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 56px; align-items: center; padding-block: 64px 80px; }
+  @media (max-width: 940px) { .hero .wrap { grid-template-columns: 1fr; gap: 44px; padding-block: 44px 56px; } }
+  .hero h1 { font-size: clamp(2.3rem, 1.4rem + 3.6vw, 3.9rem); font-weight: 800; }
+  .hero h1 span { color: var(--pen); }
+  .hero .lede { margin-top: 20px; font-size: 1.1875rem; color: var(--muted); max-width: 50ch; }
+  .hero .actions { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .facts { margin-top: 30px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--ink); }
+  .facts div { padding: 12px 12px 0 0; }
+  .facts div + div { padding-left: 14px; border-left: 1px solid var(--rule); }
+  .facts strong { display: block; font-family: var(--f-display); font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  .facts span { font-size: .8125rem; color: var(--muted); line-height: 1.35; display: block; }
+  @media (max-width: 420px) { .facts { grid-template-columns: 1fr; } .facts div + div { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); } }
+
+  /* the form fragment */
+  .form-sheet { background: var(--sheet); border: 1px solid var(--rule-strong); box-shadow: var(--shadow); position: relative; }
+  .sheet-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 14px; border-bottom: 2px solid var(--ink); }
+  .sheet-head b { font-family: var(--f-display); font-size: .9375rem; letter-spacing: -.01em; }
+  .sheet-head span { font-size: .6875rem; color: var(--muted); white-space: nowrap; }
+  .sec-title { background: var(--ink); color: var(--sheet); font-family: var(--f-display); font-weight: 700; font-size: .75rem; letter-spacing: .02em; padding: 5px 14px; }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cell { border-bottom: 1px solid var(--rule-strong); border-right: 1px solid var(--rule-strong); padding: 5px 10px 7px; min-height: 52px; position: relative; }
+  .cell:nth-child(3n) { border-right: 0; }
+  .cell.wide { grid-column: span 3; border-right: 0; }
+  .cell.two { grid-column: span 2; }
+  .cell label { display: block; font-size: .625rem; line-height: 1.25; color: var(--muted); font-weight: 500; }
+  .cell .val { display: block; margin-top: 3px; font-family: var(--f-type); font-size: .9375rem; background: var(--field); padding: 2px 6px; min-height: 1.6em; border-radius: 1px; overflow-wrap: anywhere; }
+  .cell.flag .val { outline: 2px solid var(--pen); outline-offset: 2px; border-radius: 50% / 45%; background: transparent; }
+  .note { position: absolute; font-family: var(--f-hand); font-size: 1.25rem; line-height: 1; color: var(--pen); white-space: nowrap; pointer-events: none; }
+  .sheet-foot { display: flex; justify-content: space-between; gap: 12px; padding: 8px 14px; font-size: .6875rem; color: var(--muted); }
+  .margin-notes { display: grid; gap: 10px; margin-top: 16px; }
+  .mnote { display: grid; grid-template-columns: 22px 1fr auto; gap: 10px; align-items: baseline; font-size: .875rem; }
+  .mnote i { font-style: normal; width: 22px; height: 22px; border: 2px solid var(--pen); color: var(--pen); border-radius: 50%; display: grid; place-items: center; font-family: var(--f-hand); font-size: 1rem; line-height: 1; }
+  .mnote em { font-style: normal; font-family: var(--f-type); font-size: .8125rem; color: var(--pen); white-space: nowrap; }
+  @media (max-width: 520px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+    .cell:nth-child(3n) { border-right: 1px solid var(--rule-strong); }
+    .cell:nth-child(2n) { border-right: 0; }
+    .cell.wide, .cell.two { grid-column: span 2; border-right: 0; }
+    .note { display: none; }
+    .mnote { grid-template-columns: 22px 1fr; }
+    .mnote em { grid-column: 2; }
+  }
+
+  /* sections */
+  section.band { border-top: 1px solid var(--rule); }
+  section.band > .wrap { padding-block: 76px; }
+  @media (max-width: 720px) { section.band > .wrap { padding-block: 52px; } }
+  .head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 56px; align-items: end; margin-bottom: 40px; }
+  .head p { color: var(--muted); max-width: 54ch; }
+  @media (max-width: 900px) { .head { grid-template-columns: 1fr; } }
+
+  /* checker */
+  .checker { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 0; background: var(--sheet); border: 1px solid var(--rule-strong); box-shadow: var(--shadow); }
+  @media (max-width: 900px) { .checker { grid-template-columns: 1fr; } }
+  .q-list { padding: 8px 28px 24px; }
+  @media (max-width: 520px) { .q-list { padding: 4px 16px 20px; } }
+  .q { padding-block: 18px; border-bottom: 1px solid var(--rule); display: grid; gap: 10px; }
+  .q:last-child { border-bottom: 0; }
+  .q > label, .q legend { font-weight: 600; font-size: .9375rem; }
+  .q .hint { font-weight: 400; color: var(--muted); font-size: .8125rem; display: block; margin-top: 2px; }
+  fieldset.q { border: 0; margin: 0; padding-inline: 0; min-width: 0; }
+  .q legend { padding: 0; margin-bottom: 10px; float: left; width: 100%; }
+  .q legend + * { clear: both; }
+  .opts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opt { position: relative; }
+  .opt input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .opt span { display: inline-block; padding: 7px 12px; border: 1.5px solid var(--rule-strong); border-radius: 3px; font-size: .875rem; cursor: pointer; background: var(--paper); }
+  .opt input:checked + span { border-color: var(--ink); background: var(--ink); color: var(--sheet); font-weight: 600; }
+  .opt input:focus-visible + span { outline: 2px solid var(--pen); outline-offset: 2px; }
+  input[type="number"], input[type="email"], input[type="url"], select, textarea { font: inherit; font-size: .9375rem; color: var(--ink); background: var(--paper); border: 1.5px solid var(--rule-strong); border-radius: 3px; padding: 10px 12px; width: 100%; }
+  input[type="number"] { font-family: var(--f-type); font-size: 1.125rem; max-width: 12rem; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--pen); outline-offset: 0; border-color: var(--pen); }
+  .errlist { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: .8125rem; color: var(--muted); columns: 2; column-gap: 20px; }
+  .errlist li { break-inside: avoid; padding-left: 14px; position: relative; margin-bottom: 4px; }
+  .errlist li::before { content: "×"; position: absolute; left: 0; color: var(--pen); font-weight: 700; }
+  @media (max-width: 560px) { .errlist { columns: 1; } }
+
+  .result { background: var(--field); padding: 28px; display: flex; flex-direction: column; gap: 18px; border-left: 1px solid var(--rule-strong); }
+  @media (max-width: 900px) { .result { border-left: 0; border-top: 1px solid var(--rule-strong); } }
+  @media (max-width: 520px) { .result { padding: 20px 16px; } }
+  .result .big { font-family: var(--f-display); font-weight: 800; font-size: clamp(2rem, 1.4rem + 2.4vw, 2.9rem); line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .result .big small { font-size: .45em; color: var(--muted); font-weight: 600; letter-spacing: 0; }
+  .range { position: relative; height: 10px; background: linear-gradient(90deg, var(--amber-soft), var(--pen-soft)); border: 1px solid var(--rule-strong); border-radius: 2px; margin-top: 4px; }
+  .range i { position: absolute; top: -6px; width: 3px; height: 20px; background: var(--pen); transform: translateX(-1px); transition: left .25s; }
+  @media (prefers-reduced-motion: reduce) { .range i { transition: none; } }
+  .range-scale { display: flex; justify-content: space-between; font-family: var(--f-type); font-size: .75rem; color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .kv { display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; font-size: .875rem; border-top: 1px solid var(--rule-strong); padding-top: 14px; }
+  .kv dt { color: var(--muted); }
+  .kv dd { margin: 0; font-family: var(--f-type); font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+  .alert { font-size: .875rem; padding: 12px 14px; border-left: 3px solid var(--pen); background: var(--sheet); }
+  .alert strong { color: var(--pen); }
+  .result .fine-print { font-size: .75rem; color: var(--muted); line-height: 1.5; }
+
+  /* rule change */
+  .rules { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+  @media (max-width: 820px) { .rules { grid-template-columns: 1fr; } }
+  .rule-col { background: var(--sheet); border: 1px solid var(--rule-strong); }
+  .rule-col header { padding: 16px 20px; border-bottom: 2px solid var(--ink); display: grid; gap: 4px; }
+  .rule-col header .tag { font-family: var(--f-type); font-size: .75rem; font-weight: 700; }
+  .rule-col.sub header .tag { color: var(--pen); }
+  .rule-col.tech header .tag { color: var(--amber); }
+  .rule-col ul { list-style: none; margin: 0; padding: 6px 20px 14px; }
+  .rule-col li { padding: 9px 0; border-bottom: 1px solid var(--rule); font-size: .9375rem; display: grid; grid-template-columns: 5.2rem 1fr; gap: 12px; }
+  .rule-col li:last-child { border-bottom: 0; }
+  .rule-col li span { font-family: var(--f-type); font-size: .75rem; color: var(--muted); padding-top: 3px; }
+  .source { margin-top: 14px; font-size: .8125rem; color: var(--muted); }
+
+  /* steps */
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); }
+  @media (max-width: 820px) { .steps { grid-template-columns: 1fr; } }
+  .steps li { padding: 22px 24px 8px 0; display: grid; gap: 8px; align-content: start; }
+  .steps li + li { padding-left: 24px; border-left: 1px solid var(--rule); }
+  @media (max-width: 820px) { .steps li + li { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); } }
+  .steps .n { font-family: var(--f-hand); font-size: 2rem; line-height: 1; color: var(--pen); }
+  .steps p { color: var(--muted); max-width: 42ch; }
+
+  /* pricing */
+  .plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  @media (max-width: 760px) { .plans { grid-template-columns: 1fr; } }
+  .plan { background: var(--sheet); border: 1px solid var(--rule-strong); padding: 28px; display: flex; flex-direction: column; gap: 16px; }
+  .plan.pick { border: 2px solid var(--ink); box-shadow: var(--shadow); }
+  .plan .tag { font-family: var(--f-type); font-size: .75rem; font-weight: 700; color: var(--muted); }
+  .price { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .price b { font-family: var(--f-display); font-size: 2.75rem; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+  .price span { color: var(--muted); font-size: .875rem; }
+  .plan ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; flex: 1; }
+  .plan li { padding-left: 20px; position: relative; font-size: .9375rem; }
+  .plan li::before { content: "✓"; position: absolute; left: 0; color: var(--ok); font-weight: 700; }
+
+  /* access form */
+  .access { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 36px 56px; align-items: start; }
+  @media (max-width: 900px) { .access { grid-template-columns: 1fr; } }
+  .access-copy p { margin-top: 14px; color: var(--muted); max-width: 44ch; }
+  #access-form { background: var(--sheet); border: 1px solid var(--rule-strong); padding: 26px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  @media (max-width: 560px) { #access-form { grid-template-columns: 1fr; padding: 18px; } }
+  .f { display: grid; gap: 6px; }
+  .f.full { grid-column: 1 / -1; }
+  .f label, .f legend { font-size: .8125rem; font-weight: 600; }
+  fieldset.f { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .carry { grid-column: 1 / -1; font-size: .8125rem; color: var(--muted); background: var(--field); padding: 10px 12px; font-family: var(--f-type); }
+  .form-row { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+  .form-row small { color: var(--muted); font-size: .8125rem; max-width: 40ch; }
+  .form-error { grid-column: 1 / -1; color: var(--pen); font-size: .875rem; }
+  .sent { grid-column: 1 / -1; display: grid; gap: 8px; }
+  .sent h3 { font-size: 1.5rem; }
+  .sent p { color: var(--muted); }
+
+  /* faq */
+  .faq { border-top: 1px solid var(--ink); max-width: 820px; }
+  details { border-bottom: 1px solid var(--rule); }
+  summary { cursor: pointer; list-style: none; padding: 18px 36px 18px 0; position: relative; font-family: var(--f-display); font-weight: 700; font-size: 1.125rem; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; position: absolute; right: 4px; top: 14px; font-family: var(--f-type); font-size: 1.4rem; color: var(--pen); }
+  details[open] summary::after { content: "−"; }
+  details p { padding-bottom: 20px; color: var(--muted); max-width: 66ch; }
+
+  footer { border-top: 1px solid var(--rule); }
+  footer .wrap { padding-block: 28px 44px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: .8125rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="I9Scan home"><b>I9</b>Scan</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#check">Fine check</a>
+      <a href="#rules">What changed</a>
+      <a href="#pricing">Pricing</a>
+      <a class="btn btn-solid" href="#access">Get early access</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">For restaurants, contractors, farms &amp; staffing firms</p>
+        <h1 style="margin-top:14px">Your I-9s passed last year. <span>ICE changed the rules in March.</span></h1>
+        <p class="lede">On March 16, 2026, ICE reclassified more than ten everyday I-9 mistakes as substantive violations, fined per form with no chance to correct. Upload your forms and I9Scan marks every one before an inspection notice does.</p>
+        <div class="actions">
+          <a class="btn btn-solid" href="#check">Check your fine exposure</a>
+          <a class="btn btn-line" href="#rules">See what changed</a>
+        </div>
+        <div class="facts">
+          <div><strong>$288–$2,861</strong><span>civil fine per form with a substantive error</span></div>
+          <div><strong>3 days</strong><span>to hand over every I-9 after a Notice of Inspection</span></div>
+          <div><strong>0</strong><span>corrections allowed once the notice arrives</span></div>
+        </div>
+      </div>
+
+      <div>
+        <figure class="form-sheet" style="margin:0" aria-label="Example Form I-9 Section 2 with three errors circled">
+          <div class="sheet-head"><b>Form I-9 · Section 2</b><span>Edition 01/20/25 · Example, not a real employee</span></div>
+          <div class="sec-title">Employer or Authorized Representative Review and Verification</div>
+          <div class="grid">
+            <div class="cell two"><label>List A · Document Title</label><span class="val">U.S. Passport</span></div>
+            <div class="cell"><label>Issuing Authority</label><span class="val">U.S. Dept. of State</span></div>
+            <div class="cell two"><label>Document Number (if any)</label><span class="val">•••••4417</span></div>
+            <div class="cell flag"><label>Expiration Date (if any)</label><span class="val">&nbsp;</span><span class="note" style="right:8px;top:-12px">missing!</span></div>
+            <div class="cell flag"><label>First Day of Employment (mm/dd/yyyy)</label><span class="val">&nbsp;</span></div>
+            <div class="cell"><label>Last Name of Employer Rep.</label><span class="val">Okafor</span></div>
+            <div class="cell"><label>First Name of Employer Rep.</label><span class="val">Dana</span></div>
+            <div class="cell flag"><label>Title of Employer Representative</label><span class="val">&nbsp;</span><span class="note" style="left:10px;bottom:-14px">no title</span></div>
+            <div class="cell two"><label>Employer's Business or Organization Name and Address</label><span class="val">Harbor Street Kitchen, 214 Harbor St</span></div>
+          </div>
+          <div class="sheet-foot"><span>Passport copy kept on file</span><span>Copy no longer cures missing data</span></div>
+        </figure>
+        <div class="margin-notes" aria-label="Errors found on this example form">
+          <div class="mnote"><i aria-hidden="true">1</i><span>Section 2 document expiration date left blank</span><em>substantive</em></div>
+          <div class="mnote"><i aria-hidden="true">2</i><span>First day of employment missing</span><em>substantive</em></div>
+          <div class="mnote"><i aria-hidden="true">3</i><span>Employer representative title missing</span><em>substantive</em></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="check">
+    <div class="wrap">
+      <div class="head">
+        <h2>What would an inspection cost you today?</h2>
+        <p>Answer five questions. The range uses the civil penalty amounts currently in force for Form I-9 paperwork violations. It's an estimate, not a legal opinion.</p>
+      </div>
+
+      <div class="checker">
+        <form class="q-list" id="checker" onsubmit="return false">
+          <div class="q">
+            <label for="c-forms">How many I-9s are you required to keep right now?<span class="hint">Current employees, plus former employees hired within 3 years or who left within the last year.</span></label>
+            <input id="c-forms" name="forms" type="number" min="1" max="100000" step="1" value="48" inputmode="numeric">
+          </div>
+
+          <fieldset class="q">
+            <legend>About how many of those forms have at least one of these?<span class="hint">All of these became substantive on March 16, 2026.</span></legend>
+            <ul class="errlist">
+              <li>Blank document title, number, issuer or expiration in Section 2</li>
+              <li>No first day of employment</li>
+              <li>No employer representative name or title</li>
+              <li>No employee date of birth or signature date</li>
+              <li>Missing A-Number or expiration in Section 1</li>
+              <li>Spanish form used outside Puerto Rico</li>
+            </ul>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="share" id="c-share-10" value="0.07"><span>Under 10%</span></label>
+              <label class="opt"><input type="radio" name="share" id="c-share-25" value="0.18"><span>10–25%</span></label>
+              <label class="opt"><input type="radio" name="share" id="c-share-50" value="0.38"><span>25–50%</span></label>
+              <label class="opt"><input type="radio" name="share" id="c-share-75" value="0.65"><span>Over 50%</span></label>
+              <label class="opt"><input type="radio" name="share" id="c-share-unknown" value="unknown" checked><span>I don't know</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="q">
+            <legend>Has your business been fined for I-9 violations before?</legend>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="history" id="c-hist-no" value="first" checked><span>Never</span></label>
+              <label class="opt"><input type="radio" name="history" id="c-hist-yes" value="repeat"><span>Yes, once or more</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="q">
+            <legend>What kind of business is it?</legend>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="industry" id="c-ind-food" value="restaurant" checked><span>Restaurant or food</span></label>
+              <label class="opt"><input type="radio" name="industry" id="c-ind-build" value="construction"><span>Construction</span></label>
+              <label class="opt"><input type="radio" name="industry" id="c-ind-farm" value="agriculture"><span>Agriculture</span></label>
+              <label class="opt"><input type="radio" name="industry" id="c-ind-staff" value="staffing"><span>Staffing</span></label>
+              <label class="opt"><input type="radio" name="industry" id="c-ind-hotel" value="hospitality"><span>Hotel or hospitality</span></label>
+              <label class="opt"><input type="radio" name="industry" id="c-ind-other" value="other"><span>Something else</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="q">
+            <legend>Have you received a Notice of Inspection?</legend>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="noi" id="c-noi-no" value="no" checked><span>No</span></label>
+              <label class="opt"><input type="radio" name="noi" id="c-noi-yes" value="yes"><span>Yes</span></label>
+            </div>
+          </fieldset>
+        </form>
+
+        <div class="result" aria-live="polite">
+          <div>
+            <p class="eyebrow">Estimated civil fine exposure</p>
+            <div class="big" id="r-range" style="margin-top:10px">$1,440 <small>to</small> $68,664</div>
+          </div>
+          <div>
+            <div class="range" aria-hidden="true"><i id="r-marker" style="left:48%"></i></div>
+            <div class="range-scale"><span>$288 / form</span><span>$2,861 / form</span></div>
+          </div>
+          <dl class="kv">
+            <dt>Forms likely carrying a substantive error</dt><dd id="r-count">5–24</dd>
+            <dt>Where your answers point in the range</dt><dd id="r-where">Middle of the range</dd>
+            <dt>Industry audit pressure</dt><dd id="r-industry">High</dd>
+          </dl>
+          <p class="alert" id="r-alert"><strong>Don't know your error rate?</strong> That's the most common answer, and the reason the range above is wide. Scanning your forms turns it into an exact count.</p>
+          <a class="btn btn-solid" href="#access" id="r-cta">Find the exact forms</a>
+          <p class="fine-print">Per-form amounts from the Jan 2, 2025 Federal Register inflation adjustment; OMB cancelled the 2026 adjustment. ICE sets the final amount from the share of forms with violations and five factors: business size, good faith, seriousness, unauthorized workers and prior violations. Excludes penalties for knowingly hiring unauthorized workers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="rules">
+    <div class="wrap">
+      <div class="head">
+        <h2>The March 16, 2026 fact sheet, side by side</h2>
+        <p>Errors on the left are fined as soon as they're found. Errors on the right still give you 10 business days to fix them after ICE points them out.</p>
+      </div>
+      <div class="rules">
+        <div class="rule-col sub">
+          <header><span class="tag">SUBSTANTIVE · FINED ON SIGHT</span><h3>Now substantive</h3></header>
+          <ul>
+            <li><span>Section 1</span>Missing employee date of birth</li>
+            <li><span>Section 1</span>Missing A-Number or USCIS number, when required</li>
+            <li><span>Section 1</span>Missing date next to employee signature</li>
+            <li><span>Section 1</span>Missing expiration date for work authorization</li>
+            <li><span>Form</span>Spanish-language I-9 used outside Puerto Rico</li>
+            <li><span>Section 2</span>Missing name or title of employer representative</li>
+            <li><span>Section 2</span>Incomplete List A, B or C data, even with copies on file</li>
+            <li><span>Section 2</span>Missing first day of employment</li>
+            <li><span>Supp. A</span>Incomplete preparer or translator information</li>
+            <li><span>Remote</span>Alternative procedure box unchecked, or not enrolled in E-Verify</li>
+            <li><span>Electronic</span>Audit trail, e-signature or security gaps</li>
+          </ul>
+        </div>
+        <div class="rule-col tech">
+          <header><span class="tag">TECHNICAL · 10 BUSINESS DAYS TO FIX</span><h3>Still correctable</h3></header>
+          <ul>
+            <li><span>Section 1</span>Social Security number missing (E-Verify employers)</li>
+            <li><span>Pages 2–B</span>Employee's full name not recorded</li>
+            <li><span>Section 1</span>Other last names used not provided</li>
+            <li><span>Supp. B</span>New name not recorded at reverification</li>
+            <li><span>Form</span>Outdated form edition used</li>
+            <li><span>Section 1</span>Employee address missing</li>
+            <li><span>Section 2</span>Business address missing</li>
+          </ul>
+        </div>
+      </div>
+      <p class="source">Summarized from ICE's Form I-9 Inspection fact sheet as reported by employment counsel, April 2026.</p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="head">
+        <h2>From a box of paper forms to a clean file in one sitting</h2>
+        <p>No software to install and nobody to schedule a call with. Scan with your phone or office copier.</p>
+      </div>
+      <ol class="steps">
+        <li><span class="n" aria-hidden="true">1</span><h3>Upload your scans</h3><p>Photos or PDFs of paper forms, handwritten or typed. Anything I9Scan can't read clearly is flagged for you to confirm instead of guessed.</p></li>
+        <li><span class="n" aria-hidden="true">2</span><h3>See every error, circled</h3><p>Each form is checked against the March 2026 substantive list, the technical list and the retention rules, with your exposure in dollars.</p></li>
+        <li><span class="n" aria-hidden="true">3</span><h3>Fix it the accepted way</h3><p>Step-by-step corrections that follow USCIS's own handbook: what to add, where to initial and date, and when a memo to file is needed.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" id="pricing">
+    <div class="wrap">
+      <div class="head">
+        <h2>Less than the fine on a single form</h2>
+        <p>One substantive error costs at least $288. Both plans cost less than that.</p>
+      </div>
+      <div class="plans">
+        <div class="plan">
+          <span class="tag">ONE-TIME AUDIT</span>
+          <div class="price"><b>$149</b><span>up to 75 forms · $1 per form after</span></div>
+          <ul>
+            <li>Scan and check every current form</li>
+            <li>Dollar exposure by form</li>
+            <li>Correction steps for each error</li>
+            <li>Which old forms you can legally discard</li>
+          </ul>
+          <a class="btn btn-line" href="#access" data-plan="audit">Get the one-time audit</a>
+        </div>
+        <div class="plan pick">
+          <span class="tag">STAY AUDIT-READY</span>
+          <div class="price"><b>$49</b><span>/ month · first audit included</span></div>
+          <ul>
+            <li>Everything in the one-time audit</li>
+            <li>Every new hire's form checked within a day</li>
+            <li>Alerts before work authorization expires</li>
+            <li>Inspection-ready export, any time</li>
+          </ul>
+          <a class="btn btn-solid" href="#access" data-plan="monthly">Get audit-ready monthly</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="access">
+    <div class="wrap">
+      <div class="access">
+        <div class="access-copy">
+          <h2>Get early access</h2>
+          <p>I9Scan is opening to a first group of employers. Leave your details and you'll get one email with your upload link when your account is ready.</p>
+          <p>Software, not a law firm. If you've already received a Notice of Inspection, speak with an immigration attorney before changing any form.</p>
+        </div>
+        <form id="access-form" novalidate>
+          <div class="f">
+            <label for="a-email">Work email</label>
+            <input id="a-email" name="email" type="email" autocomplete="email" required placeholder="owner@harborstreetkitchen.com">
+          </div>
+          <div class="f">
+            <label for="a-locations">Locations</label>
+            <select id="a-locations" name="locations">
+              <option>1</option>
+              <option>2–5</option>
+              <option>6–20</option>
+              <option>More than 20</option>
+            </select>
+          </div>
+          <div class="f">
+            <label for="a-format">Your I-9s are mostly</label>
+            <select id="a-format" name="format">
+              <option>Paper</option>
+              <option>PDFs or scans</option>
+              <option>In payroll / HR software</option>
+              <option>A mix</option>
+            </select>
+          </div>
+          <div class="f">
+            <label for="a-everify">Enrolled in E-Verify?</label>
+            <select id="a-everify" name="everify">
+              <option>No</option>
+              <option>Yes</option>
+              <option>Not sure</option>
+            </select>
+          </div>
+          <fieldset class="f full">
+            <legend>Plan</legend>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="plan" id="a-plan-monthly" value="monthly" checked><span>Audit-ready · $49/mo</span></label>
+              <label class="opt"><input type="radio" name="plan" id="a-plan-audit" value="audit"><span>One-time audit · $149</span></label>
+            </div>
+          </fieldset>
+          <p class="carry" id="a-carry">From your fine check: 48 forms · error rate unknown · restaurant</p>
+          <p class="form-error" id="a-error" hidden></p>
+          <div class="form-row">
+            <small>No card now. One email with your upload link, nothing else. <a href="privacy.html">Privacy</a></small>
+            <button class="btn btn-solid" type="submit" id="a-submit">Request access</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="head" style="margin-bottom:24px"><h2>Questions employers ask</h2></div>
+      <div class="faq">
+        <details>
+          <summary>What happens to the ID numbers and personal data on the forms?</summary>
+          <p>Scans are read, checked and deleted. I9Scan keeps the findings for each form (which fields have errors) and never needs to store document images to show them to you.</p>
+        </details>
+        <details>
+          <summary>Can I still fix forms if I've received a Notice of Inspection?</summary>
+          <p>Recent notices instruct employers not to change forms after receiving them. Don't use any tool to edit forms at that point; contact an immigration attorney. I9Scan is built for the time before a notice arrives.</p>
+        </details>
+        <details>
+          <summary>We keep copies of every ID. Doesn't that cover missing Section 2 details?</summary>
+          <p>Not anymore. Under the March 2026 fact sheet, missing List A, B or C information in Section 2 is substantive even when a copy of the document is on file.</p>
+        </details>
+        <details>
+          <summary>Our payroll provider handles I-9s. Do we still need this?</summary>
+          <p>Most payroll tools collect new forms going forward. They don't re-check the paper forms you completed before switching, and those are the forms an inspection asks for first.</p>
+        </details>
+        <details>
+          <summary>Is this legal advice?</summary>
+          <p>No. I9Scan compares your forms with published ICE and USCIS guidance and shows what it finds. Decisions about your situation belong with your attorney.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>I9Scan · early access · <a href="privacy.html">Privacy</a></span>
+    <span>Not affiliated with USCIS, ICE or DHS. Not legal advice.</span>
+  </div>
+</footer>
+
+<script>
+  // Where early-access requests go. Set to a Formspree / Tally / Basin endpoint when deploying.
+  // Empty = preview mode: the form validates and confirms without sending.
+  const FORM_ENDPOINT = "";
+
+  const MIN = 288, MAX = 2861;                       // per-form civil penalty range in force (FR 2025-01-02; no 2026 adjustment)
+  const HIGH_PRESSURE = ["restaurant", "construction", "agriculture", "staffing", "hospitality"];
+  const fmt = n => "$" + Math.round(n).toLocaleString("en-US");
+  const $ = id => document.getElementById(id);
+  const checker = $("checker");
+  let last = {};
+
+  function compute() {
+    const forms = Math.max(1, Math.min(100000, parseInt($("c-forms").value, 10) || 1));
+    const shareVal = checker.share.value;
+    const unknown = shareVal === "unknown";
+    // unknown -> honest wide band (10% to 50%); known -> the midpoint the answer implies
+    const lo = unknown ? 0.10 : Number(shareVal);
+    const hi = unknown ? 0.50 : Number(shareVal);
+    const nLo = Math.max(1, Math.round(forms * lo));
+    const nHi = Math.max(nLo, Math.round(forms * hi));
+    const repeat = checker.history.value === "repeat";
+    const industry = checker.industry.value;
+    const noi = checker.noi.value === "yes";
+
+    // position in the per-form range: higher error share and prior violations push toward the maximum
+    const rate = unknown ? 0.30 : Number(shareVal);
+    let pos = Math.min(1, rate / 0.5) * 0.8 + (repeat ? 0.2 : 0);
+    pos = Math.max(0.02, Math.min(0.98, pos));
+
+    $("r-range").innerHTML = `${fmt(nLo * MIN)} <small>to</small> ${fmt(nHi * MAX)}`;
+    $("r-count").textContent = nLo === nHi ? `${nLo}` : `${nLo}–${nHi}`;
+    $("r-marker").style.left = `${(pos * 100).toFixed(1)}%`;
+    $("r-where").textContent = pos < 0.34 ? "Toward the minimum" : pos < 0.67 ? "Middle of the range" : "Toward the maximum";
+    $("r-industry").textContent = HIGH_PRESSURE.includes(industry) ? "High" : "Standard";
+
+    const alert = $("r-alert");
+    if (noi) {
+      alert.innerHTML = "<strong>You've received a notice.</strong> Don't change any form now. Recent notices prohibit edits after receipt. Contact an immigration attorney today; the 3-business-day clock is running.";
+    } else if (unknown) {
+      alert.innerHTML = "<strong>Don't know your error rate?</strong> That's the most common answer, and the reason the range above is wide. Scanning your forms turns it into an exact count.";
+    } else {
+      alert.innerHTML = `<strong>${nHi} form${nHi === 1 ? "" : "s"} to find.</strong> Fixing them before a notice arrives is allowed. After a notice, it isn't.`;
+    }
+    $("r-cta").textContent = noi ? "Get access for after your inspection" : "Find the exact forms";
+
+    const labels = { "0.07": "under 10% with errors", "0.18": "10–25% with errors", "0.38": "25–50% with errors", "0.65": "over 50% with errors", "unknown": "error rate unknown" };
+    $("a-carry").textContent = `From your fine check: ${forms} forms · ${labels[shareVal]} · ${industry}${noi ? " · notice received" : ""}`;
+    last = { forms, share: shareVal, repeat, industry, noi, exposure_low: nLo * MIN, exposure_high: nHi * MAX };
+  }
+  checker.addEventListener("input", compute);
+  checker.addEventListener("change", compute);
+  compute();
+
+  // ---- plan buttons ----
+  const params = new URLSearchParams(location.search);
+  const ref = params.get("r") || params.get("utm_term") || "";
+  let clickedPlan = "";
+  document.querySelectorAll("[data-plan]").forEach(a => a.addEventListener("click", () => {
+    clickedPlan = a.dataset.plan;
+    const radio = $(`a-plan-${clickedPlan}`);
+    if (radio) radio.checked = true;
+  }));
+
+  // ---- early access ----
+  const form = $("access-form");
+  const errEl = $("a-error");
+  function sent(preview) {
+    form.innerHTML = `<div class="sent" role="status">
+      <p class="eyebrow">${preview ? "Preview · not sent" : "You're on the list"}</p>
+      <h3>Your upload link will come by email.</h3>
+      <p>${preview ? "This copy of the page isn't connected to an inbox yet, so nothing was sent."
+                   : "Until then, keep your forms exactly as they are if a Notice of Inspection arrives."}</p></div>`;
+  }
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    errEl.hidden = true;
+    const email = form.email.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      errEl.textContent = "Enter an email address we can send your upload link to.";
+      errEl.hidden = false;
+      return;
+    }
+    const data = Object.assign(Object.fromEntries(new FormData(form)), last,
+      { ref, clicked_plan: clickedPlan, utm_source: params.get("utm_source") || "", submitted_at: new Date().toISOString() });
+    if (!FORM_ENDPOINT) return sent(true);
+    const btn = $("a-submit");
+    btn.disabled = true; btn.textContent = "Sending…";
+    try {
+      const res = await fetch(FORM_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) });
+      if (!res.ok) throw new Error(String(res.status));
+      sent(false);
+    } catch (_) {
+      btn.disabled = false; btn.textContent = "Request access";
+      errEl.textContent = "Your request didn't go through. Check your connection and try again.";
+      errEl.hidden = false;
+    }
+  });
+</script>
+</body>
+</html>
