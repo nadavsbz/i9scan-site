@@ -223,7 +223,13 @@
   .steps p { color: var(--muted); max-width: 42ch; }
 
   /* pricing */
-  .plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  @media (max-width: 1000px) { .plans { grid-template-columns: 1fr; max-width: 560px; } }
+  .plan .fit { font-size: .875rem; color: var(--muted); margin: 0; }
+  .why { margin-top: 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 40px; border-top: 1px solid var(--ink); padding-top: 20px; }
+  @media (max-width: 760px) { .why { grid-template-columns: 1fr; } }
+  .why h3 { font-size: 1.05rem; }
+  .why p { color: var(--muted); margin-top: 6px; font-size: .9375rem; }
   @media (max-width: 760px) { .plans { grid-template-columns: 1fr; } }
   .plan { background: var(--sheet); border: 1px solid var(--rule-strong); padding: 28px; display: flex; flex-direction: column; gap: 16px; }
   .plan.pick { border: 2px solid var(--ink); box-shadow: var(--shadow); }
@@ -287,7 +293,7 @@
       <div>
         <p class="eyebrow">For restaurants, contractors, farms &amp; staffing firms</p>
         <h1 style="margin-top:14px">Your I-9s passed last year. <span>ICE changed the rules in March.</span></h1>
-        <p class="lede">On March 16, 2026, ICE reclassified more than ten everyday I-9 mistakes as substantive violations, fined per form with no chance to correct. Upload your forms and I9Scan marks every one before an inspection notice does.</p>
+        <p class="lede">On March 16, 2026, ICE reclassified more than ten everyday I-9 mistakes as substantive violations, fined per form with no chance to correct. Upload scans or phone photos, and I9Scan flags the errors ICE now fines on sight while there is still time to fix them.</p>
         <div class="actions">
           <a class="btn btn-solid" href="#check">Check your fine exposure</a>
           <a class="btn btn-line" href="#rules">See what changed</a>
@@ -401,8 +407,8 @@
             <dt>Where your answers point in the range</dt><dd id="r-where">Middle of the range</dd>
             <dt>Industry audit pressure</dt><dd id="r-industry">High</dd>
           </dl>
-          <p class="alert" id="r-alert"><strong>Don't know your error rate?</strong> That's the most common answer, and the reason the range above is wide. Scanning your forms turns it into an exact count.</p>
-          <a class="btn btn-solid" href="#access" id="r-cta">Find the exact forms</a>
+          <p class="alert" id="r-alert"><strong>Don't know your error rate?</strong> That's the most common answer, and the reason the range above is wide. Scanning your forms shows which ones have errors.</p>
+          <a class="btn btn-solid" href="#access" id="r-cta">Find the forms with errors</a>
           <p class="fine-print">Per-form amounts from the Jan 2, 2025 Federal Register inflation adjustment; OMB cancelled the 2026 adjustment. ICE sets the final amount from the share of forms with violations and five factors: business size, good faith, seriousness, unauthorized workers and prior violations. Excludes penalties for knowingly hiring unauthorized workers.</p>
         </div>
       </div>
@@ -457,7 +463,7 @@
       </div>
       <ol class="steps">
         <li><span class="n" aria-hidden="true">1</span><h3>Upload your scans</h3><p>Photos or PDFs of paper forms, handwritten or typed. Anything I9Scan can't read clearly is flagged for you to confirm instead of guessed.</p></li>
-        <li><span class="n" aria-hidden="true">2</span><h3>See every error, circled</h3><p>Each form is checked against the March 2026 substantive list, the technical list and the retention rules, with your exposure in dollars.</p></li>
+        <li><span class="n" aria-hidden="true">2</span><h3>See the errors, circled</h3><p>Each form is checked against ICE's March 2026 substantive and technical lists, with your exposure in dollars. Anything unclear is marked for you to confirm.</p></li>
         <li><span class="n" aria-hidden="true">3</span><h3>Fix it the accepted way</h3><p>Step-by-step corrections that follow USCIS's own handbook: what to add, where to initial and date, and when a memo to file is needed.</p></li>
       </ol>
     </div>
@@ -466,32 +472,48 @@
   <section class="band" id="pricing">
     <div class="wrap">
       <div class="head">
-        <h2>Less than the fine on a single form</h2>
-        <p>One substantive error costs at least $288. Both plans cost less than that.</p>
+        <h2>Every plan costs less than the fine on one form</h2>
+        <p>One substantive error costs at least $288. Start with a one-time audit, then choose how to keep new forms clean.</p>
       </div>
       <div class="plans">
-        <div class="plan">
-          <span class="tag">ONE-TIME AUDIT</span>
-          <div class="price"><b>$249</b><span>up to 75 forms · $1.50 per form after</span></div>
-          <ul>
-            <li>Scan and check every current form</li>
-            <li>Dollar exposure by form</li>
-            <li>Correction steps for each error</li>
-            <li>Which old forms you can legally discard</li>
-          </ul>
-          <a class="btn btn-line" href="#access" data-plan="audit">Get the one-time audit</a>
-        </div>
         <div class="plan pick">
-          <span class="tag">STAY AUDIT-READY</span>
-          <div class="price"><b>$79</b><span>/ month · first audit included</span></div>
+          <span class="tag">START HERE · ONE-TIME AUDIT</span>
+          <div class="price"><b>$249</b><span>up to 75 forms</span></div>
+          <p class="fit">$2.50 per form from 76 to 300 · $2 per form above 300</p>
           <ul>
-            <li>Everything in the one-time audit</li>
-            <li>Every new hire's form checked within a day</li>
-            <li>Alerts before work authorization expires</li>
-            <li>Inspection-ready export, any time</li>
+            <li>Scan and check the forms you keep today</li>
+            <li>Dollar exposure for each form</li>
+            <li>Correction steps for each error</li>
+            <li>A summary you can keep as your audit memo</li>
           </ul>
-          <a class="btn btn-solid" href="#access" data-plan="monthly">Get audit-ready monthly</a>
+          <a class="btn btn-solid" href="#access" data-plan="audit">Get the one-time audit</a>
         </div>
+        <div class="plan">
+          <span class="tag">NEW HIRE CHECK</span>
+          <div class="price"><b>$29</b><span>/ month · up to 10 forms</span></div>
+          <p class="fit">For high turnover or staff with temporary work authorization · $2 per extra form</p>
+          <ul>
+            <li>Each new form checked while the employee is still on staff</li>
+            <li>Alerts 90, 60 and 30 days before work authorization expires</li>
+            <li>Cancel any month</li>
+          </ul>
+          <a class="btn btn-line" href="#access" data-plan="monthly">Get new hire checks</a>
+        </div>
+        <div class="plan">
+          <span class="tag">PAY PER FORM</span>
+          <div class="price"><b>$5</b><span>per form</span></div>
+          <p class="fit">For businesses that hire a few people a year</p>
+          <ul>
+            <li>Check any single form when you need to</li>
+            <li>Same checks and correction steps</li>
+            <li>No subscription</li>
+          </ul>
+          <a class="btn btn-line" href="#access" data-plan="perform">Pay per form</a>
+        </div>
+      </div>
+      <div class="why">
+        <div><h3>Fix it while the employee is still here</h3><p>USCIS says Section 1 errors must be corrected by the employee. In a business where people leave within months, an error found at the annual audit often can't be fixed anymore. Checking each form in its first week keeps it fixable.</p></div>
+        <div><h3>Don't miss a reverification date</h3><p>When an employee's work authorization expires, reverification has to happen on time. Late reverification is a substantive violation, so you get reminders well before each date.</p></div>
       </div>
     </div>
   </section>
@@ -501,7 +523,7 @@
       <div class="access">
         <div class="access-copy">
           <h2>Get early access</h2>
-          <p>I9Scan is opening to a first group of employers. Leave your details and you'll get one email with your upload link when your account is ready.</p>
+          <p>I9Scan is opening to employers in stages. Leave your details and you'll get one email with your upload link when your account is ready.</p>
           <p>Software, not a law firm. If you've already received a Notice of Inspection, speak with an immigration attorney before changing any form.</p>
         </div>
         <form id="access-form" novalidate>
@@ -538,8 +560,9 @@
           <fieldset class="f full">
             <legend>Plan</legend>
             <div class="opts">
-              <label class="opt"><input type="radio" name="plan" id="a-plan-monthly" value="monthly" checked><span>Audit-ready · $79/mo</span></label>
-              <label class="opt"><input type="radio" name="plan" id="a-plan-audit" value="audit"><span>One-time audit · $249</span></label>
+              <label class="opt"><input type="radio" name="plan" id="a-plan-audit" value="audit" checked><span>One-time audit · $249</span></label>
+              <label class="opt"><input type="radio" name="plan" id="a-plan-monthly" value="monthly"><span>New hire check · $29/mo</span></label>
+              <label class="opt"><input type="radio" name="plan" id="a-plan-perform" value="perform"><span>Pay per form · $5</span></label>
             </div>
           </fieldset>
           <p class="carry" id="a-carry">From your fine check: 48 forms · error rate unknown · restaurant</p>
@@ -572,6 +595,14 @@
         <details>
           <summary>Our payroll provider handles I-9s. Do we still need this?</summary>
           <p>Most payroll tools collect new forms going forward. They don't re-check the paper forms you completed before switching, and those are the forms an inspection asks for first.</p>
+        </details>
+        <details>
+          <summary>Which Form I-9 editions does it read?</summary>
+          <p>Early access starts with the editions most employers have completed since 2023, beginning with Section 1 and Section 2. Older editions and Supplements A and B follow. If a form isn't supported yet, I9Scan tells you instead of guessing.</p>
+        </details>
+        <details>
+          <summary>Do I need the monthly plan?</summary>
+          <p>Only if you hire often or employ people whose work authorization expires. A business that hires a few people a year is usually better off with the one-time audit and paying per form after that.</p>
         </details>
         <details>
           <summary>Is this legal advice?</summary>
@@ -629,11 +660,11 @@
     if (noi) {
       alert.innerHTML = "<strong>You've received a notice.</strong> Don't change any form now. Recent notices prohibit edits after receipt. Contact an immigration attorney today; the 3-business-day clock is running.";
     } else if (unknown) {
-      alert.innerHTML = "<strong>Don't know your error rate?</strong> That's the most common answer, and the reason the range above is wide. Scanning your forms turns it into an exact count.";
+      alert.innerHTML = "<strong>Don't know your error rate?</strong> That's the most common answer, and the reason the range above is wide. Scanning your forms shows which ones have errors.";
     } else {
       alert.innerHTML = `<strong>${nHi} form${nHi === 1 ? "" : "s"} to find.</strong> Fixing them before a notice arrives is allowed. After a notice, it isn't.`;
     }
-    $("r-cta").textContent = noi ? "Get access for after your inspection" : "Find the exact forms";
+    $("r-cta").textContent = noi ? "Get access for after your inspection" : "Find the forms with errors";
 
     const labels = { "0.07": "under 10% with errors", "0.18": "10–25% with errors", "0.38": "25–50% with errors", "0.65": "over 50% with errors", "unknown": "error rate unknown" };
     $("a-carry").textContent = `From your fine check: ${forms} forms · ${labels[shareVal]} · ${industry}${noi ? " · notice received" : ""}`;
